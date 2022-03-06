@@ -14,14 +14,21 @@ class EpisodeDownloaded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $date;
+    public $eventId;
+    public $episodeId;
+    public $podcastId;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($eventId, $date, $episodeId, $podcastId)
     {
-        //
+        $this->date = $date;
+        $this->eventId = $eventId;
+        $this->episodeId = $episodeId;
+        $this->podcastId = $podcastId;
     }
 
     /**

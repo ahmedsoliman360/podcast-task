@@ -5,9 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEpisodeDownloadRequest;
 use App\Http\Requests\UpdateEpisodeDownloadRequest;
 use App\Models\EpisodeDownload;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use PHPUnit\Util\Json;
 
 class EpisodeDownloadController extends Controller
 {
+    public function getStats(string $date, $podcastId, $episodeId): array
+    {
+        $date = Carbon::createFromFormat("Y-m-d", $date);
+        $start = $date->copy()->subDays(6);
+
+        $period = CarbonPeriod::create($start, $date);
+
+        $stats = array();
+        foreach ($period as $date) {
+            $date = $date->format('Y-m-d');
+            $stats[$date] = EpisodeDownload::getDayCount($date, $episodeId, $podcastId);
+            $stats[$date] = is_null($stats[$date])? 0 : $stats[$date];
+        }
+        return $stats;
+    }
     /**
      * Display a listing of the resource.
      *
