@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('episode_downloads', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->uuid('episode_Id');
+            $table->uuid('podcast_Id');
+            $table->date('day');
+            $table->integer('count');
         });
     }
 
